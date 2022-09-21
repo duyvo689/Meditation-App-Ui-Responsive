@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:meditation_app_ui_responsive/utils/themes.dart';
 
+import 'choose_topic_page.dart';
+
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -21,35 +23,67 @@ class HomePage extends StatelessWidget {
                       heightFactor: 0.4, child: GetStartedHeader()),
                   Align(
                     alignment: const Alignment(0.0, 0.8),
-                    child: ElevatedButton(
-                      onPressed: () {},
-                      child: Text('GET STARTED'),
-                      style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(kColorLightGrey),
-                        shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(38))),
-                        elevation: MaterialStateProperty.all(0),
-                        fixedSize: MaterialStateProperty.all(
-                            Size(size.width * 0.8, size.height * 0.065)),
-                        foregroundColor:
-                            MaterialStateProperty.all(kColorDarkGrey),
-                        textStyle: MaterialStateProperty.all(
-                            PrimaryFont.medium(size.height * 0.015)),
-                      ),
+                    child: GetStartButton(
+                      fixSize: MaterialStateProperty.all(
+                          Size(size.width * 0.8, size.height * 0.065)),
+                      textStyle: MaterialStateProperty.all(
+                          PrimaryFont.medium(size.height * 0.015)),
                     ),
                   )
                 ],
               )
             : Row(
-                children: const [
-                  Expanded(
+                children: [
+                  const Expanded(
                     child: FractionallySizedBox(
                         heightFactor: 0.7, child: GetStartedHeader()),
                   ),
-                  Expanded(child: GetStartedBackground()),
+                  Expanded(
+                    child: Stack(
+                      children: [
+                        const GetStartedBackground(),
+                        Align(
+                          alignment: const Alignment(0.0, 0.8),
+                          child: GetStartButton(
+                            fixSize: MaterialStateProperty.all(
+                                Size(size.width * 0.36, size.height * 0.065)),
+                            textStyle: MaterialStateProperty.all(
+                                PrimaryFont.medium(size.height * 0.015)),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
                 ],
               ),
+      ),
+    );
+  }
+}
+
+class GetStartButton extends StatelessWidget {
+  const GetStartButton({Key? key, this.fixSize, this.textStyle})
+      : super(key: key);
+
+  final MaterialStateProperty<Size>? fixSize;
+  final MaterialStateProperty<TextStyle>? textStyle;
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () {
+        Navigator.of(context).pushNamed('$ChooseTopicPage');
+      },
+      // ignore: sort_child_properties_last
+      child: const Text('GET STARTED'),
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all(kColorLightGrey),
+        shape: MaterialStateProperty.all(
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(38))),
+        elevation: MaterialStateProperty.all(0),
+        fixedSize: fixSize,
+        foregroundColor: MaterialStateProperty.all(kColorDarkGrey),
+        textStyle: textStyle,
       ),
     );
   }
